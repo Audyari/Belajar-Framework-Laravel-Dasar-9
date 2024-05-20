@@ -1,17 +1,39 @@
-Pendahuluan
+Pengenalan Laravel
 
-=====================
+======================
 
 Laravel adalah salah satu framework PHP yang paling populer saat ini. Berikut adalah beberapa hal penting tentang Laravel:
 
-1.Arsitektur MVC: Laravel mengadopsi arsitektur Model-View-Controller (MVC) yang memisahkan aplikasi menjadi tiga komponen utama: model untuk menangani data, view untuk menangani tampilan, dan controller untuk menangani logika bisnis.
-2.Routing dan URL Eloquent: Laravel menyediakan sistem routing yang kuat dan fleksibel, serta URL yang "bersih" dan mudah dibaca.
-3.Eloquent ORM: Eloquent adalah Object-Relational Mapping (ORM) bawaan Laravel yang menyediakan cara mudah untuk berinteraksi dengan database menggunakan sintaks berorientasi objek.
-4.Blade Templating: Laravel menggunakan mesin templating Blade yang powerful dan mudah digunakan untuk membuat tampilan dinamis.
-5.Sistem Autentikasi dan Otorisasi: Laravel menyediakan sistem autentikasi dan otorisasi terintegrasi, yang memudahkan Anda untuk mengelola akses pengguna ke aplikasi Anda.
-6.Migrasi Database: Laravel memiliki sistem migrasi database yang memungkinkan Anda melacak dan mengelola perubahan skema database dengan mudah.
-7.Pengujian Terintegrasi: Laravel menyediakan dukungan yang kuat untuk menulis unit test dan integration test, memastikan kualitas aplikasi Anda.
-8.Ekosistem yang Kaya: Laravel memiliki ekosistem yang kaya dengan banyak paket (package) pihak ketiga yang dapat digunakan untuk memperluas fungsionalitas aplikasi.
+1.Arsitektur MVC:
+    * Laravel mengadopsi arsitektur Model-View-Controller (MVC) yang memisahkan aplikasi menjadi tiga komponen utama: model untuk menangani data, view untuk menangani tampilan, dan controller untuk menangani logika bisnis.
+    * Ini memudahkan pengembangan dan pemeliharaan aplikasi dengan memisahkan tanggung jawab masing-masing komponen.
 
+2.Routing dan URL Eloquent:
+    * Laravel menyediakan sistem routing yang kuat dan fleksibel, yang memungkinkan Anda mendefinisikan rute-rute aplikasi dengan mudah.
+    * URL yang dihasilkan oleh Laravel bersifat "bersih" dan mudah dibaca, meningkatkan pengalaman pengguna.
 
-============================================
+3.Eloquent ORM:
+    * Eloquent adalah Object-Relational Mapping (ORM) bawaan Laravel yang menyediakan cara mudah untuk berinteraksi dengan database menggunakan sintaks berorientasi objek.
+    * Ini memungkinkan Anda menulis kode database yang lebih ringkas dan mudah dipahami.
+
+4.Blade Templating:
+    * Laravel menggunakan mesin templating Blade yang powerful dan mudah digunakan untuk membuat tampilan dinamis.
+    * Blade menyediakan fitur-fitur seperti inheritance, control structures, dan ekspresi Blade yang memudahkan pengembangan front-end.
+
+5.Sistem Autentikasi dan Otorisasi:
+    * Laravel menyediakan sistem autentikasi dan otorisasi terintegrasi, yang memudahkan Anda untuk mengelola akses pengguna ke aplikasi Anda.
+    * Fitur-fitur ini termasuk login, registrasi, reset password, dan manajemen peran/izin.
+
+6.Migrasi Database:
+    * Laravel memiliki sistem migrasi database yang memungkinkan Anda melacak dan mengelola perubahan skema database dengan mudah.
+    * Migrasi memungkinkan Anda membuat, menerapkan, dan mengembalikan perubahan database dengan kode PHP.
+
+7.Pengujian Terintegrasi:
+    * Laravel menyediakan dukungan yang kuat untuk menulis unit test dan integration test, memastikan kualitas aplikasi Anda.
+    * Ini memudahkan refactoring dan memastikan aplikasi Anda tetap berfungsi dengan baik seiring perkembangan.
+
+8.Ekosistem yang Kaya:
+    * Laravel memiliki ekosistem yang kaya dengan banyak paket (package) pihak ketiga yang dapat digunakan untuk memperluas fungsionalitas aplikasi.
+    * Paket-paket ini mencakup berbagai macam fitur, dari pembayaran hingga penjadwalan tugas.
+
+========================================================================
