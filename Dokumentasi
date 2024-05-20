@@ -1,0 +1,17 @@
+Pendahuluan
+
+=====================
+
+Laravel adalah salah satu framework PHP yang paling populer saat ini. Berikut adalah beberapa hal penting tentang Laravel:
+
+1.Arsitektur MVC: Laravel mengadopsi arsitektur Model-View-Controller (MVC) yang memisahkan aplikasi menjadi tiga komponen utama: model untuk menangani data, view untuk menangani tampilan, dan controller untuk menangani logika bisnis.
+2.Routing dan URL Eloquent: Laravel menyediakan sistem routing yang kuat dan fleksibel, serta URL yang "bersih" dan mudah dibaca.
+3.Eloquent ORM: Eloquent adalah Object-Relational Mapping (ORM) bawaan Laravel yang menyediakan cara mudah untuk berinteraksi dengan database menggunakan sintaks berorientasi objek.
+4.Blade Templating: Laravel menggunakan mesin templating Blade yang powerful dan mudah digunakan untuk membuat tampilan dinamis.
+5.Sistem Autentikasi dan Otorisasi: Laravel menyediakan sistem autentikasi dan otorisasi terintegrasi, yang memudahkan Anda untuk mengelola akses pengguna ke aplikasi Anda.
+6.Migrasi Database: Laravel memiliki sistem migrasi database yang memungkinkan Anda melacak dan mengelola perubahan skema database dengan mudah.
+7.Pengujian Terintegrasi: Laravel menyediakan dukungan yang kuat untuk menulis unit test dan integration test, memastikan kualitas aplikasi Anda.
+8.Ekosistem yang Kaya: Laravel memiliki ekosistem yang kaya dengan banyak paket (package) pihak ketiga yang dapat digunakan untuk memperluas fungsionalitas aplikasi.
+
+
+============================================
