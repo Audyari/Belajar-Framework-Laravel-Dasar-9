@@ -1,15 +1,53 @@
-Instalasi Laravel
+Struktur Folder Laravel
 
 
-=======================
+=============================
 
-1. https://laravel.com/docs/9.x/installation
+Struktur folder default pada aplikasi Laravel adalah sebagai berikut:
 
-2. composer create-project laravel/laravel:^9.0 example-app
+1.app/ "(FOLDER PENTING) 2 doang"
+     * Console/: Berisi kelas-kelas Command yang digunakan untuk menjalankan perintah Artisan.
+     * Exceptions/: Berisi penanganan eksepsi/error yang terjadi dalam aplikasi.
+     * Http/: Berisi controller, middleware, dan request yang menangani HTTP requests. "(FILE PENTING)"
+     * Models/: Berisi model Eloquent yang merepresentasikan tabel database. "(FILE PENTING)"
+     * Providers/: Berisi service provider yang mendaftarkan layanan aplikasi.
 
-3. cd example-app
- 
-4. php artisan serve
+2.bootstrap/
+     * app.php: Berisi inisialisasi aplikasi Laravel.
+     * cache/: Berisi file cache yang dihasilkan oleh aplikasi.
 
+3.config/ "(Penting DI AWAL)"
+     * Berisi file-file konfigurasi untuk aplikasi, seperti database, mail, session, dll.
 
-==========================
+4.database/ "(Penting DI AWAL)"
+     * factories/: Berisi kelas-kelas factory untuk membuat data uji.
+     * migrations/: Berisi file-file migrasi untuk membuat atau memodifikasi tabel database.
+     * seeds/: Berisi kelas-kelas seeder untuk mengisi data awal ke dalam database.
+
+5.public/
+     * index.php: Berisi titik masuk aplikasi Laravel.
+     * css/, js/, img/: Berisi file aset publik seperti CSS, JavaScript, dan gambar.
+
+6.resources/ (FOLDER PENTING) 1 File Penting
+     * views/: Berisi file-file view (tampilan) aplikasi. "(1 FILE YG PENTING)"
+     * lang/: Berisi file-file lokalisasi bahasa.
+     * sass/, less/, css/, js/: Berisi file-file sumber daya frontend.
+
+7.routes/  (FOLDER PENTING)
+     * web.php: Berisi rute-rute web aplikasi.
+     * api.php: Berisi rute-rute API aplikasi.
+     * console.php: Berisi rute-rute command line.
+     * channels.php: Berisi pendaftaran channel untuk Pusher/WebSockets.
+
+8.storage/
+     * app/: Berisi file-file yang diunggah oleh pengguna.
+     * framework/: Berisi cache, session, dan file log aplikasi.
+     * logs/: Berisi file-file log aplikasi.
+
+9.tests/
+     * Berisi file-file tes unit dan integasi untuk aplikasi.
+
+10vendor/
+     * Berisi semua paket/library yang diinstal melalui Composer.
+
+==============================================================
