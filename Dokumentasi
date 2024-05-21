@@ -1,108 +1,31 @@
-Menampilkan Array Statis
+Memahami Error Laravel
 
-===========================
+================================
 
-Baik, jika Anda ingin menampilkan array statis di Laravel, ada beberapa cara yang bisa Anda gunakan:
+1.Syntax Error:
+    * Terjadi ketika ada kesalahan penulisan sintaks pada kode PHP.
+    * Contoh: Hilangnya semicolon (;), kurung, atau tanda penutup lainnya.
+    * Cara menangani: Periksa kode dengan seksama dan perbaiki kesalahan sintaks.
 
-1. Dalam Controller:
+2.Exception:
+    * Terjadi ketika ada masalah yang tidak terduga dalam eksekusi kode.
+    * Contoh: Koneksi database terputus, file tidak ditemukan, atau parameter yang tidak valid.
+    * Cara menangani: Gunakan blok try-catch untuk menangkap dan menangani exception.
 
-public function index()
-{
-    $data = ['apple', 'banana', 'cherry'];
-    return view('nama-view-kamu', compact('data'));
-}
+3.HTTP Error:
+    * Terjadi ketika ada masalah pada koneksi HTTP, seperti halaman tidak ditemukan (404) atau kesalahan server (500).
+    * Contoh: Rute yang tidak ditemukan, atau error pada controller.
+    * Cara menangani: Periksa konfigurasi rute, controller, dan file views.
 
-=============================
+4.Database Error:
+    * Terjadi ketika ada masalah pada interaksi dengan database, seperti query yang salah atau koneksi database terputus.
+    * Contoh: Kesalahan sintaks SQL, atau referensi ke kolom yang tidak ada.
+    * Cara menangani: Periksa model, query, dan koneksi database Anda.
 
-2. Dalam View (menggunakan Blade):
-
-<ul>
-    @foreach ($data as $item)
-        <li>{{ $item }}</li>
-    @endforeach
-</ul>
-
-===================================
-
-Menggunakan dd() (Dump & Die) untuk debug: ini taro di controler
-
-public function index()
-{
-    $data = ['apple', 'banana', 'cherry'];
-    dd($data);
-}
-
-=================================
-
-Menggunakan var_dump() (Verbose Dump):
-
-public function index()
-{
-    $data = ['apple', 'banana', 'cherry'];
-    var_dump($data);
-}
-
-=================================
-
-Menggunakan print_r() (Print Readable):
-
-public function index()
-{
-    $data = ['apple', 'banana', 'cherry'];
-    print_r($data);
-}
+5.Validation Error:
+    * Terjadi ketika ada masalah pada validasi data input pengguna.
+    * Contoh: Nilai yang tidak sesuai dengan aturan validasi.
+    * Cara menangani: Gunakan fitur validasi Laravel untuk memastikan input pengguna valid.
 
 
-===========================
-
-contoh yg lain :
-
- public function index()
-    {
-        $data = [
-            [
-                'Judul Blog 1',
-                'Isi konten blog 1 yang panjang...',
-
-            ],
-            [
-                'Judul Blog 2',
-                'Isi konten blog 2 yang panjang...',
-            ],
-            [
-                'Judul Blog 3',
-                'Isi konten blog 3 yang panjang...',
-            ],
-            // Tambahkan data blog lainnya di sini
-        ];
-        return view('index', compact('data'));
-    }
-
-=================
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Daftar Blog</title>
-</head>
-<body>
-    <h1>Daftar Blog</h1>
-    <ul>
-        @foreach ($data as $blog)
-        <li>
-            <h2>{{ $blog[0] }}</h2>
-            <p>{{ substr($blog[1], 0, 100) }}...</p>
-            <a href="#">Baca Selengkapnya</a>
-        </li>
-        @endforeach
-    </ul>
-</body>
-</html>
-
-===================================
-
-
-=====================================
+=====================
