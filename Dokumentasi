@@ -1,47 +1,36 @@
-Alur Kerja MVC Laravel
+Mencoba MVC di Laravel
 
-=========================
+============================
 
+masih seputar :
 
-Dalam arsitektur MVC, aplikasi Laravel terbagi menjadi tiga komponen utama:
+1. user akses ke route :
+2. isi route :
 
-1.Model:
-    * Bertanggung jawab untuk mengelola data dan logika bisnis aplikasi.
-    * Model biasanya berupa kelas Eloquent yang mewakili tabel database.
-    * Model menyediakan metode untuk mengambil, menyimpan, mengubah, dan menghapus data.
+<?php
 
-2.View:
-    * Bertanggung jawab untuk menyajikan tampilan dan antarmuka pengguna.
-    * View berupa file Blade yang mencakup HTML, CSS, dan JavaScript.
-    * View menerima data dari controller dan menampilkannya dalam bentuk yang dapat diakses oleh pengguna.
+use App\Http\Controllers\MahasiswaController;
+use Illuminate\Support\Facades\Route;
 
-3.Controller:
-Bertanggung jawab untuk menerima dan menanggapi permintaan pengguna.
-Controller memproses input, melakukan operasi pada model, dan mengembalikan response yang sesuai.
-Controller bertindak sebagai perantara antara model dan view.
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+ */
 
-================================================
+Route::get('/', function () {
+    return view('welcome');
+});
 
-Alur kerja MVC pada Laravel adalah sebagai berikut:
+=======================================
 
-1. Pengguna membuat permintaan (request) ke aplikasi melalui URL.
-2. Router (routes/web.php) mencocokkan URL dengan rute yang sesuai dan mengarahkan permintaan ke controller yang tepat.
-3. Controller menerima permintaan, melakukan operasi pada model jika diperlukan, dan mengirimkan data ke view.
-4.View menerima data dari controller dan menghasilkan tampilan yang ditampilkan ke pengguna.
-Pengguna menerima respons dari aplikasi.
-
-==============================================
-
-Contoh alur kerja MVC dalam Laravel:
-
-1. Pengguna mengakses URL /posts/1.
-2. Router mencocokkan URL dengan rute /posts/{id} dan mengarahkan ke PostController@show.
-3. PostController@show mengambil data post dengan ID 1 dari model Post.
-4. PostController mengirimkan data post ke view post.blade.php.
-5. View post.blade.php menerima data post dan menampilkannya ke pengguna.
-
-Dengan mengikuti pola MVC, aplikasi Laravel menjadi lebih terstruktur, modular, dan mudah dikelola. Setiap 
-komponen memiliki tanggung jawab yang jelas, sehingga pengembangan dan pemeliharaan aplikasi menjadi lebih efisien.
+3. dia langsuk akses ke view welcome 
 
 
-=======================================================
+
+============================================
