@@ -1,13 +1,36 @@
-Instalasi Composer
+Sekilas Tentang Command Line
 
-========================
+============================
 
-1. Buka browser Anda dan pergi ke https://getcomposer.org/download/
-2. composer --version
+1.Membuka Command Prompt atau PowerShell:
+    * Tekan tombol Windows + R, ketik cmd atau powershell, lalu tekan Enter untuk membuka command line.
+    * Atau Anda dapat mencarinya di menu Start Windows.
 
-========================
+2.Navigasi Direktori:
+    * Gunakan perintah cd (change directory) untuk berpindah direktori, misalnya cd C:\Users\YourUsername\Documents.
+    * Gunakan dir untuk melihat daftar file dan direktori di direktori saat ini.
 
-1. composer create-project laravel/laravel:^9.0 example-app
+3.Membuat dan Menghapus File/Direktori:
+    * Perintah type nul > filename.txt untuk membuat file baru.
+    * Perintah mkdir foldername untuk membuat direktori baru.
+    * Perintah del filename.txt untuk menghapus file, dan rmdir foldername /s /q untuk menghapus direktori.
 
+4.Mengedit File:
+    * Anda dapat menggunakan teks editor seperti Notepad, Sublime Text, atau Visual Studio Code untuk mengedit file secara langsung.
+    * Atau Anda dapat menggunakan perintah notepad filename.txt untuk membuka file dengan Notepad.
 
-===============================
+5.Menjalankan Perintah:
+    * Ketik perintah dan tekan Enter untuk menjalankannya.
+    * Perintah-perintah penting dalam pengembangan Laravel antara lain php, composer, dan npm.
+
+6.Riwayat Perintah:
+    * Gunakan panah atas/bawah untuk menelusuri riwayat perintah yang pernah dijalankan.
+    * Perintah doskey /history untuk melihat daftar perintah yang pernah dijalankan.
+
+7.uto-complete:
+    * Tekan Tab untuk melengkapi perintah atau nama file/direktori yang sedang Anda ketik.
+
+8.Bantuan dan Dokumentasi:
+    * Gunakan perintah /? atau -? untuk melihat bantuan penggunaan suatu perintah.
+
+==============================================================
