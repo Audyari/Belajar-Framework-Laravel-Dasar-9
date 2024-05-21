@@ -1,121 +1,108 @@
-Pengenalan Resource Controller
+Menampilkan Array Statis
 
-==========================
+===========================
 
-cek route yg sudah dibuat : php artisan route:list
+Baik, jika Anda ingin menampilkan array statis di Laravel, ada beberapa cara yang bisa Anda gunakan:
 
-contoh pembuatan nya : 
+1. Dalam Controller:
 
-Resource Controller di Laravel adalah sebuah fitur yang menyediakan cara mudah untuk membuat controller 
-yang menangani operasi CRUD (Create, Read, Update, Delete) pada sebuah resource.
-
-
-1. php artisan make:controller PostController --resource
-
-maka langsung jadi controler CRUDE : berikut contoh jadi nya 
-
-dokumentasi nya : https://laravel.com/docs/9.x/controllers#resource-controllers
-
-===============================================
-
-<?php
-
-namespace App\Http\Controllers;
-
-use Illuminate\Http\Request;
-
-class test extends Controller
+public function index()
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        return "<H1> ini index test </H1>";
-    }
+    $data = ['apple', 'banana', 'cherry'];
+    return view('nama-view-kamu', compact('data'));
+}
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+=============================
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+2. Dalam View (menggunakan Blade):
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        return "<H1> SHOW  $id </H1> ";
-    }
+<ul>
+    @foreach ($data as $item)
+        <li>{{ $item }}</li>
+    @endforeach
+</ul>
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+===================================
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+Menggunakan dd() (Dump & Die) untuk debug: ini taro di controler
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
+public function index()
+{
+    $data = ['apple', 'banana', 'cherry'];
+    dd($data);
+}
+
+=================================
+
+Menggunakan var_dump() (Verbose Dump):
+
+public function index()
+{
+    $data = ['apple', 'banana', 'cherry'];
+    var_dump($data);
+}
+
+=================================
+
+Menggunakan print_r() (Print Readable):
+
+public function index()
+{
+    $data = ['apple', 'banana', 'cherry'];
+    print_r($data);
 }
 
 
+===========================
 
-=======================================================
+contoh yg lain :
 
-untuk route web.php nya di buat seperti ini :
+ public function index()
+    {
+        $data = [
+            [
+                'Judul Blog 1',
+                'Isi konten blog 1 yang panjang...',
 
-<?php
+            ],
+            [
+                'Judul Blog 2',
+                'Isi konten blog 2 yang panjang...',
+            ],
+            [
+                'Judul Blog 3',
+                'Isi konten blog 3 yang panjang...',
+            ],
+            // Tambahkan data blog lainnya di sini
+        ];
+        return view('index', compact('data'));
+    }
 
-use App\Http\Controllers\test;
-use Illuminate\Support\Facades\Route;
+=================
 
-Route::resource('test', test::class);
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Daftar Blog</title>
+</head>
+<body>
+    <h1>Daftar Blog</h1>
+    <ul>
+        @foreach ($data as $blog)
+        <li>
+            <h2>{{ $blog[0] }}</h2>
+            <p>{{ substr($blog[1], 0, 100) }}...</p>
+            <a href="#">Baca Selengkapnya</a>
+        </li>
+        @endforeach
+    </ul>
+</body>
+</html>
+
+===================================
 
 
-
-============================================
+=====================================
