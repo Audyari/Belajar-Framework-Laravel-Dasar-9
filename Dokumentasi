@@ -1,18 +1,121 @@
-Pengenalan Metode HTTP
+Pengenalan Resource Controller
 
-========================
+==========================
 
-Dalam pengembangan proyek blog, Anda dapat menggunakan metode-metode HTTP ini untuk membuat endpoint API yang sesuai.
-Berikut adalah contoh penggunaannya:
+cek route yg sudah dibuat : php artisan route:list
 
-1.GET: GET /posts untuk mendapatkan daftar postingan blog, GET /posts/{id} untuk mendapatkan detail postingan blog tertentu.
+contoh pembuatan nya : 
 
-2.POST: POST /posts untuk menambahkan postingan blog baru, POST /posts/{id}/comments untuk menambahkan komentar pada postingan blog.
+Resource Controller di Laravel adalah sebuah fitur yang menyediakan cara mudah untuk membuat controller 
+yang menangani operasi CRUD (Create, Read, Update, Delete) pada sebuah resource.
 
-3.PUT: PUT /posts/{id} untuk memperbarui konten postingan blog.
 
-4.PATCH: PATCH /posts/{id} untuk memperbarui sebagian konten postingan blog.
+1. php artisan make:controller PostController --resource
 
-5.DELETE: DELETE /posts/{id} untuk menghapus postingan blog, DELETE /posts/{id}/comments/{commentId} untuk menghapus komentar tertentu.
+maka langsung jadi controler CRUDE : berikut contoh jadi nya 
 
-=============================
+dokumentasi nya : https://laravel.com/docs/9.x/controllers#resource-controllers
+
+===============================================
+
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+class test extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+        return "<H1> ini index test </H1>";
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        //
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        return "<H1> SHOW  $id </H1> ";
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        //
+    }
+}
+
+
+
+=======================================================
+
+untuk route web.php nya di buat seperti ini :
+
+<?php
+
+use App\Http\Controllers\test;
+use Illuminate\Support\Facades\Route;
+
+Route::resource('test', test::class);
+
+
+
+============================================
