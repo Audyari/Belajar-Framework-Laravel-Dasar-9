@@ -1,36 +1,254 @@
-Mencoba MVC di Laravel
+Membuat Routing Dasar
+
+catatan untuk route enak nya pake model "class"
+==========================
+
+ada 5 cara : 
+1. Rute sederhana:
+2. Rute dengan parameter:
+3. Rute dengan controller:
+4. Rute dengan nama:
+5. Grup rute:
+
+
+=======================
+
+contoh 1 Rute sederhana: 
+
+masukkan ini di route we.php :
+
+Route::get('/', function () {
+    return 'Selamat datang di aplikasi saya!';
+});
+
+===========================
+
+contoh 2  Rute dengan parameter:
+
+Route::get('/hello/{name}', function ($name) {
+    return 'Halo, ' . $name . '!';
+});
 
 ============================
 
-masih seputar :
+contoh 3  Rute dengan controller:
 
-1. user akses ke route :
-2. isi route :
+1. Pertama-tama, buat controller baru dengan perintah Artisan:
+    * php artisan make:controller PagesController
+
+2. Buka file PagesController.php dan tambahkan metode home():
+
+        <?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+class PagesController extends Controller
+{
+    public function home()
+    {
+        return view('pages.home');
+    }
+}
+
+
+3. Selanjutnya, buka file routes/web.php dan tambahkan rute untuk halaman home:
 
 <?php
 
-use App\Http\Controllers\MahasiswaController;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PagesController;
+
+Route::get('/', [PagesController::class, 'home']);
+
+4. Buat file view resources/views/pages/home.blade.php dan tambahkan kontennya:
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Halaman Home</title>
+</head>
+<body>
+    <h1>Selamat datang di halaman home!</h1>
+    <p>Ini adalah contoh sederhana penggunaan controller dalam routing.</p>
+</body>
+</html>
+
+
+5. php artisan serv
+6. http://localhost:8000/
+
+==========================================
+
+4. Rute dengan nama:
+
+contoh : 
+
+1. Buka file routes/web.php dan tambahkan rute dengan nama:
+
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PagesController;
+
+Route::get('/about', [PagesController::class, 'about'])->name('about');
+
+2. Buat metode about() pada PagesController:
+
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+class PagesController extends Controller
+{
+    public function about()
+    {
+        return view('pages.about');
+    }
+}
+
+3. Buat file view resources/views/pages/about.blade.php dan tambahkan kontennya:
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Halaman About</title>
+</head>
+<body>
+    <h1>Ini adalah halaman about</h1>
+    <p>Ini adalah contoh penggunaan rute dengan nama.</p>
+</body>
+</html>
+
+4. anda bisa taro ini di views  :
+
+// Membuat link ke rute 'about'
+<a href="{{ route('about') }}">Halaman About</a>
+
+// Melakukan redirect ke rute 'about'
+return redirect()->route('about');
+
+5. atau anda bisa Melakukan redirect ke rute 'about':
+
+<?php
+// Dalam controller, misalnya PagesController.php
+public function someMethod()
+{
+    // Logika lain di sini
+    return redirect()->route('about');
+}
+
+
+===============================================
+
+4. Grup rute:
+
+buat route web.php :
+
+<?php
+
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
- */
+// Grup rute admin
+Route::prefix('admin')->name('admin.')->group(function () {
+    // Rute untuk halaman dashboard admin
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
-Route::get('/', function () {
-    return view('welcome');
+    // Rute untuk mengelola pengguna
+    Route::get('/users', [AdminController::class, 'users'])->name('users');
+    Route::get('/users/create', [AdminController::class, 'createUser'])->name('users.create');
+    Route::post('/users/store', [AdminController::class, 'storeUser'])->name('users.store');
+
+    // Rute untuk mengelola produk
+    Route::get('/products', [AdminController::class, 'products'])->name('products');
+    Route::get('/products/create', [AdminController::class, 'createProduct'])->name('products.create');
+    Route::post('/products/store', [AdminController::class, 'storeProduct'])->name('products.store');
 });
 
-=======================================
-
-3. dia langsuk akses ke view welcome 
-
+// Rute umum
+Route::get('/', [DashboardController::class, 'index'])->name('home');
 
 
-============================================
+2. buat 2   * Controllers\AdminController;
+            * Controllers\DashboardController;
+
+AdminController :
+
+<?php
+
+namespace App\Http\Controllers;
+
+class AdminController extends Controller
+{
+    public function users()
+    {
+        return 'Ini adalah halaman daftar pengguna di area admin.';
+    }
+
+    public function createUser()
+    {
+        return 'Ini adalah halaman buat pengguna baru di area admin.';
+    }
+
+    public function storeUser()
+    {
+        return 'Ini adalah proses menyimpan pengguna baru di area admin.';
+    }
+
+    public function products()
+    {
+        return 'Ini adalah halaman daftar produk di area admin.';
+    }
+
+    public function createProduct()
+    {
+        return 'Ini adalah halaman buat produk baru di area admin.';
+    }
+
+    public function storeProduct()
+    {
+        return 'Ini adalah proses menyimpan produk baru di area admin.';
+    }
+}
+
+
+ini DashboardController :
+
+
+<?php
+
+namespace App\Http\Controllers;
+
+class DashboardController extends Controller
+{
+    public function index()
+    {
+        return 'Ini adalah halaman dashboard umum.';
+    }
+
+    public function adminIndex()
+    {
+        return 'Ini adalah halaman dashboard admin.';
+    }
+}
+
+
+
+====================================================
+
+
+
+
+
+
+
+
+
+
+
+
