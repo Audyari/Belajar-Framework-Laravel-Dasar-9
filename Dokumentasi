@@ -1,16 +1,204 @@
-Melakukan Debugging
+Menampilkan Detail Data dari File - Part 1
 
-==========================
+===========================================
 
-1. Dump and Die (dd()):
-    Anda dapat menggunakan fungsi dd() (dump and die) untuk mencetak dan menghentikan eksekusi kode.
-    Contoh: dd($data); akan mencetak isi variabel $data dan menghentikan eksekusi kode selanjutnya.
+buat web.php buat routing :
 
-2. Dump, Die, Debug
-     Contoh: ddd($data); 
+<?php
 
-3. cara memasukkan ke tampilan blade :
+use App\Http\Controllers\BlogPostController;
+use Illuminate\Support\Facades\Route;
 
- @php(dd($blogPosts))
+Route::get('/blog-posts', [BlogPostController::class, 'index'])->name('blog-posts.index');
+Route::get('/blog-posts/{id}', [BlogPostController::class, 'show'])->name('blog-posts.show');
 
-=======================================
+
+=============================
+
+
+buat json : blog_posts.json  : storage/app/blog_posts.json
+
+[
+  {
+    "id": 1,
+    "title": "Judul Blog 1",
+    "content": "Ini adalah isi dari blog pertama.",
+    "author": {
+      "name": "John Doe",
+      "email": "john@example.com"
+    },
+    "published_at": "2023-05-22T12:34:56Z",
+    "tags": ["blog", "tutorial", "programming"]
+  },
+  {
+    "id": 2,
+    "title": "Judul Blog 2",
+    "content": "Ini adalah isi dari blog kedua.",
+    "author": {
+      "name": "Jane Smith",
+      "email": "jane@example.com"
+    },
+    "published_at": "2023-05-20T09:15:30Z",
+    "tags": ["blog", "news", "technology"]
+  },
+  {
+    "id": 3,
+    "title": "Judul Blog 3",
+    "content": "Ini adalah isi dari blog ketiga.",
+    "author": {
+      "name": "Bob Johnson",
+      "email": "bob@example.com"
+    },
+    "published_at": "2023-05-18T17:45:00Z",
+    "tags": ["blog", "opinion", "lifestyle"]
+  }
+]
+
+
+======================================
+
+
+buat controler BlogPostController :
+
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
+
+class BlogPostController extends Controller
+{
+    public function index()
+    {
+        $blogPosts = $this->getBlogPosts();
+        //dd($blogPosts);
+        return view('blog.index', compact('blogPosts'));
+    }
+
+    public function show($id)
+    {
+        $blogPosts = $this->getBlogPosts();
+        $blogPost = collect($blogPosts)->where('id', $id)->first();
+
+        if (!$blogPost) {
+            abort(404, 'Blog post not found');
+        }
+
+        return view('blog.show', compact('blogPost'));
+    }
+
+    protected function getAllBlogPosts()
+    {
+        $files = File::files(storage_path('app/blog-posts'));
+        $blogPosts = [];
+
+        foreach ($files as $file) {
+            if ($file->getExtension() === 'json') {
+                $filename = pathinfo($file->getFilename(), PATHINFO_FILENAME);
+                $id = str_replace('post-', '', $filename);
+                $data = json_decode(File::get($file), true);
+                $data['id'] = $id;
+                $blogPosts[] = $data;
+            }
+        }
+
+        return $blogPosts;
+    }
+
+    protected function getBlogPostById($id)
+    {
+        $file = storage_path("app/blog-posts/post-{$id}.json");
+        $data = json_decode(File::get($file), true);
+        return $data;
+    }
+
+    private function getBlogPosts()
+    {
+        $blogPostsJson = Storage::get('blog_posts.json');
+
+        return json_decode($blogPostsJson, true);
+    }
+}
+
+
+======================================
+
+blog/index.blade.php
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <!-- resources/views/blog/index.blade.php -->
+
+
+
+@section('content')
+    <div class="container">
+        <h1>Blog Posts</h1>
+
+        <div class="row">
+            @foreach ($blogPosts as $post)
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ $post['title'] }}</h5>
+                            <p class="card-text">{{ Str::limit($post['content'], 100) }}</p>
+                            <a href="/blog-posts/{{ $post['id'] }}" class="btn btn-primary">Read More</a>
+                        </div>
+                        <div class="card-footer text-muted">
+                            Posted by {{ $post['author']['name'] }} on {{ \Carbon\Carbon::parse($post['published_at'])->format('M d, Y') }}
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
+
+</body>
+</html>
+
+
+=======================
+
+blog/show.blade.php
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <!-- resources/views/blog/show.blade.php -->
+
+
+@section('content')
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h1 class="card-title">{{ $blogPost['title'] }}</h1>
+                        <p class="card-text">{{ $blogPost['content'] }}</p>
+                    </div>
+                    <div class="card-footer text-muted">
+                        Posted by {{ $blogPost['author']['name'] }} on {{ \Carbon\Carbon::parse($blogPost['published_at'])->format('M d, Y') }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
+
+================================
