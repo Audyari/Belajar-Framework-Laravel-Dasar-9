@@ -1,204 +1,290 @@
-Menampilkan Detail Data dari File - Part 1
+Menampilkan Detail Data dari File - Part 2
 
-===========================================
+ini yg Route nya ke ID :
 
-buat web.php buat routing :
+=================================================
+
+1. bikin route nya 
+
+web.php
 
 <?php
 
-use App\Http\Controllers\BlogPostController;
+use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/blog-posts', [BlogPostController::class, 'index'])->name('blog-posts.index');
-Route::get('/blog-posts/{id}', [BlogPostController::class, 'show'])->name('blog-posts.show');
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::resource('PostController', PostController::class);
 
 
-=============================
+===================================================
 
-
-buat json : blog_posts.json  : storage/app/blog_posts.json
-
-[
-  {
-    "id": 1,
-    "title": "Judul Blog 1",
-    "content": "Ini adalah isi dari blog pertama.",
-    "author": {
-      "name": "John Doe",
-      "email": "john@example.com"
-    },
-    "published_at": "2023-05-22T12:34:56Z",
-    "tags": ["blog", "tutorial", "programming"]
-  },
-  {
-    "id": 2,
-    "title": "Judul Blog 2",
-    "content": "Ini adalah isi dari blog kedua.",
-    "author": {
-      "name": "Jane Smith",
-      "email": "jane@example.com"
-    },
-    "published_at": "2023-05-20T09:15:30Z",
-    "tags": ["blog", "news", "technology"]
-  },
-  {
-    "id": 3,
-    "title": "Judul Blog 3",
-    "content": "Ini adalah isi dari blog ketiga.",
-    "author": {
-      "name": "Bob Johnson",
-      "email": "bob@example.com"
-    },
-    "published_at": "2023-05-18T17:45:00Z",
-    "tags": ["blog", "opinion", "lifestyle"]
-  }
-]
-
-
-======================================
-
-
-buat controler BlogPostController :
+2. bikin controler nya :  PostController
 
 <?php
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\Request;
 
-class BlogPostController extends Controller
+class PostController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
-        $blogPosts = $this->getBlogPosts();
-        //dd($blogPosts);
-        return view('blog.index', compact('blogPosts'));
+         $blogPosts = $this->readBlogPostsFromFile(resource_path('data/data.txt'));
+
+
+         return view('Post.index', compact('blogPosts'));
     }
 
+    private function readBlogPostsFromFile($filePath)
+{
+    $posts = [];
+    $lines = file($filePath, FILE_IGNORE_NEW_LINES);
+
+
+    for ($i = 0; $i < count($lines); $i += 4) {
+        $posts[] = [
+            'id' => $lines[$i],
+            'title' => $lines[$i + 1],
+            'content' => $lines[$i + 2],
+            'tanggal' => $lines[$i + 3]
+        ];
+    }
+    //  dd($posts);
+
+    return $posts;
+}
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        //
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function show($id)
     {
-        $blogPosts = $this->getBlogPosts();
-        $blogPost = collect($blogPosts)->where('id', $id)->first();
+        $blogPosts = $this->readBlogPostsFromFile(resource_path('data/data.txt'));
 
-        if (!$blogPost) {
-            abort(404, 'Blog post not found');
-        }
 
-        return view('blog.show', compact('blogPost'));
-    }
 
-    protected function getAllBlogPosts()
-    {
-        $files = File::files(storage_path('app/blog-posts'));
-        $blogPosts = [];
+        $post = null;
+        foreach ($blogPosts as $p) {
+            if ($p['id'] == $id) {
+                $post = $p;
 
-        foreach ($files as $file) {
-            if ($file->getExtension() === 'json') {
-                $filename = pathinfo($file->getFilename(), PATHINFO_FILENAME);
-                $id = str_replace('post-', '', $filename);
-                $data = json_decode(File::get($file), true);
-                $data['id'] = $id;
-                $blogPosts[] = $data;
+                break;
             }
         }
 
-        return $blogPosts;
+        if ($post) {
+            // Jika post ditemukan, kirim data ke view
+            return view('Post.show', compact('post'));
+        } else {
+            // Jika post tidak ditemukan, tampilkan halaman error 404
+            return view('Post.errors');
+        }
     }
 
-    protected function getBlogPostById($id)
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
     {
-        $file = storage_path("app/blog-posts/post-{$id}.json");
-        $data = json_decode(File::get($file), true);
-        return $data;
+        //
     }
 
-    private function getBlogPosts()
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
     {
-        $blogPostsJson = Storage::get('blog_posts.json');
+        //
+    }
 
-        return json_decode($blogPostsJson, true);
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        //
     }
 }
 
 
-======================================
+================================
 
-blog/index.blade.php
+3. bikin test data nya di :
+
+D:\Laravel\example-app\resources\data\data.txt
+
+1
+Judul Blog 1
+Ini adalah konten blog 1.
+12-1-2021
+2
+Judul Blog 2
+Ini adalah konten blog 2.
+12-1-2021
+3
+Judul Blog 3
+Ini adalah konten blog 3.
+12-1-2021
+4
+Judul Blog 3
+Ini adalah konten blog 3.
+12-1-2021
+5
+Judul Blog 3
+Ini adalah konten blog 3.
+12-1-2021
+6
+Judul Blog 3
+Ini adalah konten blog 3.
+12-1-2021
+7
+Judul Blog 3
+Ini adalah konten blog 3.
+12-1-2021
+8
+Judul Blog 3
+Ini adalah konten blog 3.
+12-1-2021
+
+
+========================================
+
+bikin 2 view 
+
+1. index.blade.php
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+     <link href="{{ asset('bootstrap-5/css/bootstrap.min.css') }}" rel="stylesheet">
+    <title>Test Bootsrap</title>
 </head>
 <body>
-    <!-- resources/views/blog/index.blade.php -->
 
-
-
-@section('content')
-    <div class="container">
+<div class="container my-5">
         <h1>Blog Posts</h1>
 
         <div class="row">
             @foreach ($blogPosts as $post)
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ $post['title'] }}</h5>
-                            <p class="card-text">{{ Str::limit($post['content'], 100) }}</p>
-                            <a href="/blog-posts/{{ $post['id'] }}" class="btn btn-primary">Read More</a>
-                        </div>
-                        <div class="card-footer text-muted">
-                            Posted by {{ $post['author']['name'] }} on {{ \Carbon\Carbon::parse($post['published_at'])->format('M d, Y') }}
-                        </div>
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card">
+                    <img src="https://via.placeholder.com/150" class="card-img-top" alt="Blog Image">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ $post['title'] }}</h5>
+                        <p class="card-text">{{ $post['content'] }}</p>
+                        <p class="card-text">{{ $post['tanggal'] }}</p>
+                        <a href="{{ url("PostController/{$post['id']}") }}" class="btn btn-primary">Read More</a>
                     </div>
                 </div>
+            </div>
             @endforeach
         </div>
     </div>
 
+<script src="{{ asset('bootstrap-5/js/bootstrap.bundle.min.js') }}"></script>
 </body>
 </html>
 
 
-=======================
+==========================
 
-blog/show.blade.php
+2. show.blade.php
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <title>Document</title>
 </head>
 <body>
-    <!-- resources/views/blog/show.blade.php -->
-
-
-@section('content')
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8 offset-md-2">
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <h1 class="card-title">{{ $blogPost['title'] }}</h1>
-                        <p class="card-text">{{ $blogPost['content'] }}</p>
-                    </div>
-                    <div class="card-footer text-muted">
-                        Posted by {{ $blogPost['author']['name'] }} on {{ \Carbon\Carbon::parse($blogPost['published_at'])->format('M d, Y') }}
-                    </div>
-                </div>
+    <div class="d-flex justify-content-center mt-5">
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                @if ($post)
+                    <h1 class="card-title">{{ $post['title'] }}</h1>
+                    <p class="card-text">{{ $post['content'] }}</p>
+                    <p class="card-text">Tanggal: {{ $post['tanggal'] }}</p>
+                    <a href="{{ url('/PostController') }}" class="btn btn-primary">Go somewhere</a>
+                    <a href="{{ url('/PostController') }}" class="btn btn-primary">EDIT</a>
+                @else
+                    <h1>Halaman Tidak Ditemukan</h1>
+                    <p>Maaf, post yang Anda cari tidak dapat ditemukan.</p>
+                @endif
             </div>
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>
 
-================================
+
+===============================================
+
+
+
+
+
+
+
+
